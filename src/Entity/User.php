@@ -27,7 +27,7 @@ class User
     #[Assert\Length(min:2,max:50)]
     private ?string $lastName = null;
 
-    #[ORM\Column(length: 255, unique:true)]
+    #[ORM\Column(length: 180, unique:true)]
     #[Assert\Email()]
     private ?string $email = null;
 
