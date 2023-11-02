@@ -17,17 +17,17 @@ class User
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string',length: 50)]
+    #[ORM\Column(type: 'string', length: 50)]
     #[Assert\NotBlank()]
-    #[Assert\Length(min:2,max:50)]
+    #[Assert\Length(min: 2, max: 50)]
     private ?string $firstName = null;
 
-    #[ORM\Column(type: 'string',length: 50)]
+    #[ORM\Column(type: 'string', length: 50)]
     #[Assert\NotBlank()]
-    #[Assert\Length(min:2,max:50)]
+    #[Assert\Length(min: 2, max: 50)]
     private ?string $lastName = null;
 
-    #[ORM\Column(length: 180, unique:true)]
+    #[ORM\Column(length: 180, unique: true)]
     #[Assert\Email()]
     private ?string $email = null;
 
@@ -35,7 +35,7 @@ class User
     #[Assert\NotBlank()]
     private ?string $password = null;
 
-    #[ORM\Column (type:'json')]
+    #[ORM\Column(type: 'json')]
     #[Assert\NotNull()]
     private array $roles = [];
 
@@ -97,8 +97,9 @@ class User
 
     public function setEmail(string $email): static
     {
-        $this->email = $email;
-
+        // Supprimer les espaces de l'adresse e-mail
+        $cleanedEmail = str_replace(' ', '', $email);
+        $this->email = $cleanedEmail;
         return $this;
     }
 

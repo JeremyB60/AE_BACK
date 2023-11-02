@@ -17,7 +17,7 @@ class UserRegistrationService
 
     public function registerUser(UserRegistrationDTO $registrationDTO)
     {
-        // Effectuez des opérations de validation des données 
+        // Effectuez des opérations de validation des données
         // (par exemple,vérification de l'unicité de l'adresse email, longueur minimale du mot de passe, etc.)
         if (!$this->isEmailUnique($registrationDTO->getEmail())) {
             return 'Email déjà utilisé';
@@ -42,8 +42,10 @@ class UserRegistrationService
 
     private function isEmailUnique($email)
     {
+        // Supprimer les espaces de l'adresse e-mail
+        $cleanedEmail = str_replace(' ', '', $email);
         // Vous pouvez implémenter une logique pour vérifier si l'adresse email est unique dans la base de données
-        $existingUser = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+        $existingUser = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $cleanedEmail]);
 
         return $existingUser === null;
     }
