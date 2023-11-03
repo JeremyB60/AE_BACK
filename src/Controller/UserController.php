@@ -17,17 +17,17 @@ class UserController extends AbstractController
     private $validator;
     private $registrationService;
 
-    public function __construct(SerializerInterface $serializer, ValidatorInterface $validator,
-    UserRegistrationService $registrationService)
-    {
+    public function __construct(
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        UserRegistrationService $registrationService
+    ) {
         $this->serializer = $serializer;
         $this->validator = $validator;
         $this->registrationService = $registrationService;
     }
 
-    /**
-     * @Route("/register", name="user_register", methods={"POST"})
-     */
+    #[Route(path: '/register', name: 'user_register')]
     public function register(Request $request)
     {
         // Désérialisez les données JSON en un objet UserRegistrationDTO

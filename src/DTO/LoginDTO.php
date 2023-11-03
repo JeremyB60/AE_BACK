@@ -2,9 +2,8 @@
 
 namespace App\DTO;
 
-class UserLoginDTO
+class LoginDTO
 {
-
     private $email;
     private $password;
 

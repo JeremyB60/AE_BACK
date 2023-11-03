@@ -1,33 +1,41 @@
 <?php
 
+// src/Controller/LoginController.php
 namespace App\Controller;
 
-use App\DTO\UserLoginDTO;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use App\Service\LoginService;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\DTO\LoginDTO;
 
 class SecurityController extends AbstractController
 {
-    #[Route(path: '/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    private $loginService;
+
+    public function __construct(LoginService $loginService)
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
-
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        $this->loginService = $loginService;
     }
 
-    #[Route(path: '/logout', name: 'app_logout')]
-    public function logout(): void
+    #[Route('/login', name: 'app_login', methods: ['POST'])]
+    public function login(Request $request): JsonResponse
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        $data = json_decode($request->getContent(), true);
+
+        $loginDTO = new LoginDTO();
+        $loginDTO->setEmail($data['email']);
+        $loginDTO->setPassword($data['password']);
+
+        $token = $this->loginService->authenticate($loginDTO);
+
+        if ($token) {
+            return new JsonResponse(['token' => $token]);
+        }
+
+        return new JsonResponse(['message' => 'Identifiants invalides'], 401);
     }
+
+    // ... Autres actions du contrôleur, y compris la déconnexion
 }
