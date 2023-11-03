@@ -6,3 +6,6 @@ user_register:
     path: /register
     controller: App\Controller\UserController::register
     methods: [GET, POST]
+
+api_login_check:
+    path: /api/login_check
