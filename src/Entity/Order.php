@@ -58,6 +58,10 @@ class Order
     #[ORM\JoinColumn(nullable: false)]
     private ?User $orderUser = null;
 
+    #[ORM\ManyToOne(inversedBy: 'orderUser')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $userId = null;
+
     public function __construct()
     {
         $this->lineProducts = new ArrayCollection();
@@ -245,6 +249,18 @@ class Order
     public function setOrderUser(?User $orderUser): static
     {
         $this->orderUser = $orderUser;
+
+        return $this;
+    }
+
+    public function getUserId(): ?User
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(?User $userId): static
+    {
+        $this->userId = $userId;
 
         return $this;
     }

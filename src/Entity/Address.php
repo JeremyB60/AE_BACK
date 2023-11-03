@@ -47,6 +47,10 @@ class Address
     #[ORM\JoinColumn(nullable: false)]
     private ?User $userAddress = null;
 
+    #[ORM\ManyToOne(inversedBy: 'userAddress')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $userId = null;
+
     public function __construct()
     {
         $this->deliveryAddress = new ArrayCollection();
@@ -211,6 +215,18 @@ class Address
     public function setUserAddress(?User $userAddress): static
     {
         $this->userAddress = $userAddress;
+
+        return $this;
+    }
+
+    public function getUserId(): ?User
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(?User $userId): static
+    {
+        $this->userId = $userId;
 
         return $this;
     }

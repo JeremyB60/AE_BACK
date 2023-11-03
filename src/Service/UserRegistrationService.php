@@ -23,8 +23,15 @@ class UserRegistrationService
             return 'Email déjà utilisé';
         }
 
-        // Hachez le mot de passe
-        $hashedPassword = password_hash($registrationDTO->getPassword(), PASSWORD_BCRYPT);
+        // Récupérez le mot de passe de l'objet $registrationDTO
+        $password = $registrationDTO->getPassword();
+
+        if (empty($password)) {
+            return 'Le mot de passe ne peut être vide.';
+        } else {
+            // Le mot de passe n'est pas vide, hachez-le
+            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+        }
 
         // Créez une nouvelle entité User
         $user = new User();
@@ -32,6 +39,8 @@ class UserRegistrationService
         $user->setFirstName($registrationDTO->getFirstName());
         $user->setEmail($registrationDTO->getEmail());
         $user->setPassword($hashedPassword);
+        $user->setRoles($registrationDTO->getRoles());
+        $user->setAccountStatus($registrationDTO->getAccountStatus());
 
         // Enregistrez l'utilisateur en base de données
         $this->entityManager->persist($user);
